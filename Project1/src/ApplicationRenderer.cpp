@@ -214,46 +214,55 @@ void ApplicationRenderer::Start()
 
 
 
+    Model* woodFloor = new Model("Models/WoodFloor/WoodFloor.obj");
+    woodFloor->transform.SetPosition(glm::vec3(0, -1.0f, 0));
 
-    PhysicsObject* ballPhysics = new PhysicsObject();
-    ballPhysics->name = "BallPhysics";
-    ballPhysics->LoadModel(*(DebugModels::GetInstance().defaultSphere));
-    ballPhysics->transform.SetPosition(glm::vec3(0, -1, 0));
-    ballPhysics->transform.SetScale(glm::vec3(0.25f));
-    GraphicsRender::GetInstance().AddModelAndShader(ballPhysics, defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(woodFloor, defaultShader);
 
-    ballPhysics->Initialize(SPHERE, true, STATIC);
+    Model* woodFloor2 = new Model(*woodFloor);
+    woodFloor2->transform.SetPosition(glm::vec3(4, -1.0f, 0));
+    GraphicsRender::GetInstance().AddModelAndShader(woodFloor2, defaultShader);
 
 
-    PhysicsObject* floor = new PhysicsObject();
-    floor->name = "Floor Physics";
-    floor->LoadModel("Models/Floor/Floor.fbx");
-    floor->transform.SetRotation(glm::vec3(90, 0, 0));
-    floor->transform.SetPosition(glm::vec3(0, -2, 0));
+    Model* woodFloor3 = new Model(*woodFloor);
+    woodFloor3->transform.SetPosition(glm::vec3(-4, -1.0f, 0));
+    GraphicsRender::GetInstance().AddModelAndShader(woodFloor3, defaultShader);
 
-    GraphicsRender::GetInstance().AddModelAndShader(floor, defaultShader);
-    floor->Initialize(AABB, true, STATIC);
+    Model* flagPole = new Model("Models/Pole/FlagPole.obj");
+    flagPole->transform.SetScale(glm::vec3(0.5f));
+    flagPole->transform.SetPosition(glm::vec3(0, -1.40f,0));
+    GraphicsRender::GetInstance().AddModelAndShader(flagPole, defaultShader);
 
-    //Model* chain
+    Model* terrain = new Model("Models/Terrain/Terrain.ply");
+    terrain->transform.SetScale(glm::vec3(0.25f));
+    terrain->transform.SetPosition(glm::vec3(0,-1,1));
 
+    GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
 
     SoftbodyObject* softBodyTest1 = new SoftbodyObject();
-    softBodyTest1->name = "SoftbodySphere1";
-   // softBodyTest1->LoadModel("Models/Plane/Plane.ply");
-    softBodyTest1->LoadModel("Models/Chain/Chain.fbx");
+    softBodyTest1->name = "Flag";
+
+
+    softBodyTest1->LoadModel("Models/Plane/Plane10x10.ply");
+
+
+    std::string flagTexturePath = "Textures/Flag.png";
+    Texture* flagTexture = new Texture(flagTexturePath);
+
     //softBodyTest1->LoadModel("Models/DefaultCube/DefaultCube.fbx");
-    softBodyTest1->transform.SetPosition(glm::vec3(0, 1, 0));
+    softBodyTest1->transform.SetPosition(glm::vec3(-1.30f, 5.00f, -4.60f));
     //softBodyTest1->transform.SetPosition(glm::vec3(0, 1, 0));
     //softBodyTest1->transform.SetScale(glm::vec3(5));
-    softBodyTest1->transform.SetScale(glm::vec3(0.25f));
+    softBodyTest1->transform.SetScale(glm::vec3(10,4,10));
     GraphicsRender::GetInstance().AddModelAndShader(softBodyTest1, defaultShader);
-    softBodyTest1->updateAABBTest = ballPhysics;
-    softBodyTest1->type = BodyType::SPRING;
     softBodyTest1->Initialize();
     
-    softBodyTest1->AddLockSphere(glm::vec3(0.00192526f, 0.991442f, -0.00474217f), 0.08f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.20f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f,-4.6f), 0.20f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.20f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.20f);
 
-  //  0.00192526, 0.991442, -0.00474217
+
 }
 
 void ApplicationRenderer::PreRender()

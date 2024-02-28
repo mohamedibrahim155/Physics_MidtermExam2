@@ -125,8 +125,6 @@ void SoftbodyObject::CalculateSpring()
 		}
 
 
-	
-		//point->centre = totalPositions / (float)point->vertex.size();
 
 		point->position = modelMat * glm::vec4(point->centre, 1);
 
@@ -411,7 +409,10 @@ void SoftbodyObject::UpdatePoints(float deltaTime)
 			glm::vec3 direction = currentPosition - prevPosition;
 
 			
-				point->position += (direction) + (glm::vec3(0, -gravity, 0) * (float)(deltaTime * deltaTime));
+			
+				//point->position += (direction) + (glm::vec3(0, -gravity, 0) * (float)(deltaTime * deltaTime));
+
+				point->position += (direction) + acceleration * (float)(deltaTime * deltaTime)  * 0.98f;
 
 				point->previousPosition = currentPosition;
 
@@ -460,11 +461,11 @@ void SoftbodyObject::CollisionTest()
 			handleSoftBodyAABBCollision(*point,updateAABBTest->UpdateAABB());
 			std::cout << "Collision Detected" << std::endl;
 		}*/
-		cSphere sphere = updateAABBTest->UpdateSphere();
+		/*cSphere sphere = updateAABBTest->UpdateSphere();
 		if (CheckSoftBodySphereCollision(point, sphere))
 		{
 			HandleSoftBodySphereCollision(point, sphere);
-		}
+		}*/
 	}
 
 	
@@ -524,49 +525,24 @@ void SoftbodyObject::AddLockSphere(glm::vec3 centre, float radius)
 
 	for (Point* point : listOfPoints)
 	{
+		if (point->locked)
+		{
+			continue;
+		}
 		point->locked = IsPointLocked(point, centre, radius);
 	}
 }
 
 void SoftbodyObject::UpdateVertices()
 {
-
+	
 	switch (type)
 	{
 	case BodyType::CLOTH:
-
-		//for (Point* point : listOfPoints)
-		//{
-		//	glm::vec4 vertexMatrix = glm::vec4(point->position, 1.0f);
-
-		//	glm::mat4 modelInversematrix = transform.GetModelInverseMatrix();
-		//	vertexMatrix = modelInversematrix * vertexMatrix;
-
-		//	point->vertex[0]->Position = glm::vec3(vertexMatrix.x, vertexMatrix.y, vertexMatrix.z);
-		//}
+		UpdateClothVertices();
 		break;
 	case BodyType::SPRING:
-
-		glm::mat4 modelInversematrix = transform.GetModelInverseMatrix();
-		for (Point* point : listOfPoints)
-		{
-			for (size_t i = 0; i < point->vertex.size(); i++)
-			{
-
-
-				glm::vec3 transformPosition =   modelInversematrix * glm::vec4((point->position), 1);
-
-
-				transformPosition += point->vertex[i]->offset;
-
-
-			//vertexMatrix = vertexMatrix * transform.GetModelMatrix();
-
-				point->vertex[i]->vertex->Position = glm::vec3(transformPosition.x, transformPosition.y, transformPosition.z);
-
-
-			}
-		}
+		UpdateSpringVertices();
 		break;
 	default:
 		break;
@@ -664,6 +640,39 @@ void SoftbodyObject::UpdateNormals()
 	}
 	
 
+}
+
+void SoftbodyObject::UpdateClothVertices()
+{
+	glm::mat4 modelInversematrix = transform.GetModelInverseMatrix();
+
+	for (Point* point : listOfPoints)
+	{
+		glm::vec4 vertexMatrix = glm::vec4(point->position, 1.0f);
+
+
+		vertexMatrix = modelInversematrix * vertexMatrix;
+
+		point->vertex[0]->vertex->Position = glm::vec3(vertexMatrix.x, vertexMatrix.y, vertexMatrix.z);
+	}
+}
+
+void SoftbodyObject::UpdateSpringVertices()
+{
+	glm::mat4 modelInversematrix = transform.GetModelInverseMatrix();
+
+	for (Point* point : listOfPoints)
+	{
+		for (size_t i = 0; i < point->vertex.size(); i++)
+		{
+
+			glm::vec3 transformPosition = modelInversematrix * glm::vec4((point->position), 1);
+
+			transformPosition += point->vertex[i]->offset;
+
+			point->vertex[i]->vertex->Position = glm::vec3(transformPosition.x, transformPosition.y, transformPosition.z);
+		}
+	}
 }
 
 
