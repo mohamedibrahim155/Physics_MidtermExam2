@@ -64,6 +64,8 @@ public:
 	Model* SkyBoxModel;
 	Shader* defaultShader;
 	Shader* solidColorShader;
+	Shader* alphaBlendShader;
+	Shader* alphaCutOutShader;
 	Shader* stencilShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();

@@ -125,7 +125,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height, std::string wi
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    sceneViewcamera->transform.position = glm::vec3(-0.27f, 3.64f, -16.64f);
+    //sceneViewcamera->transform.position = glm::vec3(-0.27f, 3.64f, -16.64f);
+    sceneViewcamera->transform.position = glm::vec3(-0.27f, 3.64f, -5.74f);
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
     gameScenecamera->transform.position = glm::vec3(-0.27f, 3.64f, -16.64f);
@@ -160,6 +161,8 @@ void ApplicationRenderer::InitializeShaders()
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader;
+    GraphicsRender::GetInstance().alphaCutOutShader = alphaCutoutShader;
+    GraphicsRender::GetInstance().alphaBlendShader = alphaBlendShader;
 
 
 
