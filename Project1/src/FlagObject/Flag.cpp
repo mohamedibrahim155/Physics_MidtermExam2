@@ -54,7 +54,9 @@ FlagObject::FlagObject()
     AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
     AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.30f);
 
-    AddAllLockedNodes();
+    AddLockedPoints();
+
+    InitalFlag();
 
     InputManager::GetInstance().AddObserver(this);
 
@@ -103,13 +105,13 @@ void FlagObject::OnDestroy()
 {
 }
 
-void FlagObject::AddAllLockedNodes()
+void FlagObject::AddLockedPoints()
 {
     for (Point* pointsLocked : listOfPoints)
     {
         if (pointsLocked->locked)
         {
-            lockedPointsList.push_back(pointsLocked);
+            listOfLockedPoints.push_back(pointsLocked);
         }
     }
 }
@@ -138,9 +140,6 @@ void FlagObject::GetRandomSpherePointed()
 
     for (Stick* mStick : localList)
     {
-       // mStick->pointA->locked = true;
-      //  mStick->pointB->locked = true;
-
         mStick->isActive = false;
 
     }
@@ -150,11 +149,64 @@ void FlagObject::GetRandomSpherePointed()
 
 }
 
-void FlagObject::DisconnectFlag()
+void FlagObject::LockNodes(bool isLocked)
 {
-    for (Point* lockedPoint : listOfPoints)
+    for (Point* lockedPoint : listOfLockedPoints)
     {
-        lockedPoint->locked = false;
+        lockedPoint->locked = isLocked;
+    }
+}
+
+void FlagObject::InitalFlag()
+{
+    glm::mat4 inverse = transform.GetModelInverseMatrix();
+
+    for (std::shared_ptr<Mesh> mesh :  meshes)
+    {
+        listOfFlagPositions.reserve(mesh->vertices.size());
+
+        for (Vertex& vertex : mesh->vertices)
+        {
+            glm::vec3 vertexPosition = inverse * glm::vec4(vertex.Position, 1);
+
+            FlagVertex* temp = new FlagVertex(&vertex, vertexPosition);
+
+            listOfFlagPositions.push_back(temp);
+        }
+
+    }
+
+
+
+}
+
+void FlagObject::ReConstruct()
+{
+   
+
+    SetMeshVerticesPosition();
+
+    CalculateCloth();
+
+    AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.30f);
+
+    AddLockedPoints();
+
+    LockNodes(true);
+}
+
+void FlagObject::SetMeshVerticesPosition()
+{
+    glm::mat4 modelTransform = transform.GetModelMatrix();
+
+    for (FlagVertex* flagvertex : listOfFlagPositions )
+    {
+        glm::vec3 position = modelTransform * glm::vec4(flagvertex->initialPosition, 1);
+
+        flagvertex->vertex->Position = flagvertex->initialPosition;
     }
 }
 
@@ -178,7 +230,11 @@ void FlagObject::OnKeyPressed(const int& key)
 
     if (key == GLFW_KEY_4)
     {
-        DisconnectFlag();
+        LockNodes(false);
+    }
+    if (key == GLFW_KEY_5)
+    {
+        ReConstruct();
     }
 }
 

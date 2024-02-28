@@ -42,6 +42,8 @@ void SoftbodyObject::CalculateCloth()
 
 
 	listOfPoints.clear();
+	listOfSticks.clear();
+
 
 	unsigned int meshIndex = 0;
 	for (std::shared_ptr<Mesh> mesh : meshes)

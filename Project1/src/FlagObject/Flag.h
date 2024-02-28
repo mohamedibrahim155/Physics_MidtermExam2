@@ -3,6 +3,17 @@
 #include "../InputManager/InputManager.h"
 #include"../Math.h"
 
+
+struct FlagVertex
+{
+	FlagVertex() {};
+	FlagVertex(Vertex* vertex, glm::vec3 initialPosition) : vertex(vertex),
+		initialPosition(initialPosition) {};
+
+	Vertex* vertex;
+	glm::vec3 initialPosition;
+};
+
 class FlagObject : public SoftbodyObject, public iInputObserver
 {
 public: 
@@ -32,14 +43,22 @@ private:
 	glm::vec3 windOnAcceleration = glm::vec3(-2.0f, -1.0f, 0.7f);
 	glm::vec3 windOffAcceleration = glm::vec3(0, -10.0f, 0);
 
-	std::vector<Point*> lockedPointsList;
+	std::vector<Point*> listOfLockedPoints;
 
-	// Inherited via iInputObserver
-	void AddAllLockedNodes();
+	std::vector<FlagVertex*> listOfFlagPositions;
+
+
+
+	void AddLockedPoints();
 
 	void GetRandomSpherePointed();
 
-	void DisconnectFlag();
+	void LockNodes(bool isLocked);
+	void InitalFlag();
+	void ReConstruct();
+	void SetMeshVerticesPosition();
+
+	// Inherited via iInputObserver
 	void OnKeyPressed(const int& key) override;
 
 	void OnKeyReleased(const int& key) override;
