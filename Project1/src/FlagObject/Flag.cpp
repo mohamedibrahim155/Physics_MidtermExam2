@@ -1,5 +1,8 @@
 #include "Flag.h"
 #include "../Time.h"
+
+using namespace MathUtils;
+
 FlagObject::FlagObject()
 {
 	name = "Flag";
@@ -18,7 +21,8 @@ FlagObject::FlagObject()
 
     //LoadModel("Models/Plane/FlagPlane10x10.fbx");
    // LoadModel("Models/Plane/Plane10x10.ply");
-    LoadModel("Models/Plane/IBU10x10.ply");
+   // LoadModel("Models/Plane/IBU10x10.ply");
+    LoadModel("Models/Plane/IBU_HighPoly10x10.ply");
   //  LoadModel("Models/Plane/Flag.ply");
     acceleration = glm::vec3(-2, -1.0f, 0.7f);
     meshes[0]->meshMaterial->material()->diffuseTexture = flagTexture;
@@ -45,11 +49,14 @@ FlagObject::FlagObject()
 
 
 
-    AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.30f);
     AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
     AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.30f);
 
+    AddAllLockedNodes();
+
+    InputManager::GetInstance().AddObserver(this);
 
 }
 
@@ -84,7 +91,7 @@ void FlagObject::Start()
 
 void FlagObject::Update(float deltaTime)
 {
-    OnAccelerationChange();
+   
 }
 
 void FlagObject::Render()
@@ -96,19 +103,89 @@ void FlagObject::OnDestroy()
 {
 }
 
-void FlagObject::OnAccelerationChange()
+void FlagObject::AddAllLockedNodes()
 {
-   
-    timeStep += Time::GetInstance().deltaTime / time;
-
-    lerpValue = timeStep;
-
-    acceleration = LerpObject(acceleration, glm::vec3(-5, -1.0f, 0.7f), lerpValue);
+    for (Point* pointsLocked : listOfPoints)
+    {
+        if (pointsLocked->locked)
+        {
+            lockedPointsList.push_back(pointsLocked);
+        }
+    }
 }
 
-glm::vec3 FlagObject::LerpObject(const glm::vec3& a, const glm::vec3& b, float t)
+void FlagObject::GetRandomSpherePointed()
 {
-    t = glm::clamp(t, 0.0f, 1.0f);
+    int randomIndex = Math::GetRandomIntNumber(0, listOfSticks.size() - 1);
 
-    return a + t * (b - a);
+    Stick* stick = listOfSticks[randomIndex];
+   
+   // Stick* stick4 = listOfSticks[randomIndex];
+
+    glm::vec3 sphereCenter = stick->centre;
+
+    float radius = 0.5f;
+
+    std::vector<Stick*> localList;
+    for (Stick* mStick : listOfSticks)
+    {
+        if (glm::distance(mStick->centre, sphereCenter) < radius) 
+        {
+            localList.push_back(mStick);
+
+        }
+    }
+
+    for (Stick* mStick : localList)
+    {
+       // mStick->pointA->locked = true;
+      //  mStick->pointB->locked = true;
+
+        mStick->isActive = false;
+
+    }
+ 
+
+   
+
+}
+
+void FlagObject::DisconnectFlag()
+{
+    for (Point* lockedPoint : listOfPoints)
+    {
+        lockedPoint->locked = false;
+    }
+}
+
+
+
+
+void FlagObject::OnKeyPressed(const int& key)
+{
+    if (key == GLFW_KEY_2)
+    {
+        isWindBlow = !isWindBlow;
+
+       // glm::vec3 acceleration = glm::vec3(-2, -1.0f, 0.7f);
+        acceleration = isWindBlow ? windOnAcceleration : windOffAcceleration;
+    }
+
+    if (key == GLFW_KEY_3)
+    {
+        GetRandomSpherePointed();
+    }
+
+    if (key == GLFW_KEY_4)
+    {
+        DisconnectFlag();
+    }
+}
+
+void FlagObject::OnKeyReleased(const int& key)
+{
+}
+
+void FlagObject::OnKeyHold(const int& key)
+{
 }

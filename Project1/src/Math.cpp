@@ -74,3 +74,27 @@ bool Math::DecomposeTransform(const glm::mat4& transform, glm::vec3& position,  
 
 	return true;
 }
+
+int MathUtils::Math::GetRandomIntNumber(int min, int max)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	// Define the distribution for the specified range
+	std::uniform_int_distribution<int> distribution(min, max);
+
+	// Generate and return a random number
+	return distribution(gen);
+}
+
+
+float MathUtils::Math::GetRandomFloatNumber(float min, float max) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	// Use std::uniform_real_distribution for floating-point numbers
+	std::uniform_real_distribution<float> distribution(min, max);
+
+	return distribution(gen);
+}
+

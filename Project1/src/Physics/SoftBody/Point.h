@@ -25,6 +25,7 @@ struct Point
 	glm::vec3 centre = glm::vec3(0);
 	 std::vector<VertexData*> vertex;
 	bool locked = false;
+	bool isActive = true;
 
 };
 

@@ -310,7 +310,7 @@ void SoftbodyObject::Render()
 
 	for (Stick* stick : listOfSticks)
 	{
-		GraphicsRender::GetInstance().DrawLine(stick->pointA->position, stick->pointB->position, glm::vec4(1, 1, 0, 1));
+		//GraphicsRender::GetInstance().DrawLine(stick->pointA->position, stick->pointB->position, glm::vec4(1, 1, 0, 1));
 	}
 	
 	GraphicsRender::GetInstance().DrawSphere(lockSphereCenter, lockRadius, glm::vec4(1, 0, 1, 1), true);
@@ -331,7 +331,7 @@ void SoftbodyObject::UpdateVerlet(float deltaTime)
 
 void SoftbodyObject::UpdateSticks(float deltaTime)
 {
-	const unsigned int MAX_ITERATION = 3;
+	const unsigned int MAX_ITERATION = 10;
 
 	for (size_t i = 0; i < MAX_ITERATION; i++)
 	{
@@ -352,7 +352,7 @@ void SoftbodyObject::UpdateSticks(float deltaTime)
 
 					if (diff > 0.1f)
 					{
-					///	stick->isActive = false;
+						stick->isActive = false;
 					}
 				
 					if (!pointA->locked) pointA->position += delta * 0.5f * diff * tightnessFactor;
@@ -412,7 +412,9 @@ void SoftbodyObject::UpdatePoints(float deltaTime)
 			
 				//point->position += (direction) + (glm::vec3(0, -gravity, 0) * (float)(deltaTime * deltaTime));
 
-				point->position += (direction) + acceleration * (float)(deltaTime * deltaTime)  * 0.98f;
+			if (point->isActive)
+			{
+				point->position += (direction)+acceleration * (float)(deltaTime * deltaTime) * 0.98f;
 
 				point->previousPosition = currentPosition;
 
@@ -435,6 +437,7 @@ void SoftbodyObject::UpdatePoints(float deltaTime)
 
 				CleanZeros(point->position);
 				CleanZeros(point->previousPosition);
+			}
 				
 		}
 
