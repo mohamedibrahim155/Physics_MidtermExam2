@@ -252,42 +252,43 @@ void ApplicationRenderer::Start()
     GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
 
 
-    std::string flagTexturePath = "Textures/FLAG2.png";
-    Texture* flagTexture = new Texture(flagTexturePath);
+   // std::string flagTexturePath = "Textures/FLAG2.png";
+   // Texture* flagTexture = new Texture(flagTexturePath);
 
 
-    SoftbodyObject* softBodyTest1 = new SoftbodyObject();
-    softBodyTest1->name = "Flag";
+   // SoftbodyObject* softBodyTest1 = new SoftbodyObject();
+   // softBodyTest1->name = "Flag";
 
 
-    softBodyTest1->LoadModel("Models/Plane/Plane10x10.ply");
-    //softBodyTest1->LoadModel("Models/Plane/Flag.ply");
-    softBodyTest1->acceleration = glm::vec3(-2, -1.0f, 0.7f);
-    softBodyTest1->meshes[0]->meshMaterial->material()->diffuseTexture = flagTexture;
-    softBodyTest1->meshes[0]->meshMaterial->material()->useMaskTexture = true;
+   // softBodyTest1->LoadModel("Models/Plane/Plane10x10.ply");
+   // //softBodyTest1->LoadModel("Models/Plane/Flag.ply");
+   // softBodyTest1->acceleration = glm::vec3(-2, -1.0f, 0.7f);
+   // softBodyTest1->meshes[0]->meshMaterial->material()->diffuseTexture = flagTexture;
+   // softBodyTest1->meshes[0]->meshMaterial->material()->useMaskTexture = true;
  
-    //softBodyTest1->LoadModel("Models/DefaultCube/DefaultCube.fbx");
-    softBodyTest1->transform.SetPosition(glm::vec3(-1.30f, 5.00f, -4.60f));
-   // softBodyTest1->transform.SetPosition(glm::vec3(-0.10f, 4.50f, -4.60f));  50x50
-    //softBodyTest1->transform.SetPosition(glm::vec3(0, 1, 0));
-    //softBodyTest1->transform.SetScale(glm::vec3(5));
-    softBodyTest1->transform.SetScale(glm::vec3(10,4,10));
-    GraphicsRender::GetInstance().AddModelAndShader(softBodyTest1, alphaCutoutShader);
-    softBodyTest1->showDebug = false;
-    softBodyTest1->Initialize();
-    
-    /*softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.20f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f,-4.6f), 0.20f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.20f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.20f);*/
+   // //softBodyTest1->LoadModel("Models/DefaultCube/DefaultCube.fbx");
+   // softBodyTest1->transform.SetPosition(glm::vec3(-1.30f, 5.00f, -4.60f));
+   //// softBodyTest1->transform.SetPosition(glm::vec3(-0.10f, 4.50f, -4.60f));  50x50
+   // //softBodyTest1->transform.SetPosition(glm::vec3(0, 1, 0));
+   // //softBodyTest1->transform.SetScale(glm::vec3(5));
+   // softBodyTest1->transform.SetScale(glm::vec3(10,4,10));
+   // GraphicsRender::GetInstance().AddModelAndShader(softBodyTest1, alphaCutoutShader);
+   // softBodyTest1->showDebug = false;
+   // softBodyTest1->Initialize();
+   // 
+   // /*softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.20f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f,-4.6f), 0.20f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.20f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.20f);*/
 
 
 
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.30f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.30f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.30f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
+   // softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.30f);
 
+    FlagObject* flag = new FlagObject();
 }
 
 void ApplicationRenderer::PreRender()

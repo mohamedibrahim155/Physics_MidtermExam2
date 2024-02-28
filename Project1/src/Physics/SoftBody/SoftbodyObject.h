@@ -38,13 +38,13 @@ public:
 	void SetupSticks(std::shared_ptr<Mesh> mesh, unsigned int currentMeshIndex);
 
 
-	void DrawProperties()override;
-	void SceneDraw()override;
+	virtual void DrawProperties()override;
+	virtual void SceneDraw()override;
 
-	void Start() override;
-	void Update(float deltaTime) override;
-	void Render() override;
-	void OnDestroy() override;
+	virtual void Start() override;
+	virtual void Update(float deltaTime) override;
+	virtual void Render() override;
+	virtual void OnDestroy() override;
 
 	void UpdateVerlet(float deltaTime);
 	void UpdateSticks(float deltaTime);

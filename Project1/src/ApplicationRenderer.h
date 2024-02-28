@@ -28,6 +28,8 @@
 #include "CameraManager.h"
 
 #include "Physics/PhysicsEngine.h"
+#include "FlagObject/Flag.h"
+
 class ApplicationRenderer
 {
 public:
