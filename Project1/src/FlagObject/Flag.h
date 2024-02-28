@@ -12,6 +12,8 @@ struct FlagVertex
 
 	Vertex* vertex;
 	glm::vec3 initialPosition;
+
+	unsigned int index;
 };
 
 class FlagObject : public SoftbodyObject, public iInputObserver
@@ -47,6 +49,8 @@ private:
 
 	std::vector<FlagVertex*> listOfFlagPositions;
 
+	std::vector<Point*> listOfRemovePointsIndices;
+	//std::vector<unsigned int> alreadyRemovedIndex;
 
 
 	void AddLockedPoints();
@@ -54,7 +58,7 @@ private:
 	void GetRandomSpherePointed();
 
 	void LockNodes(bool isLocked);
-	void InitalFlag();
+	void InitalizeFlag();
 	void ReConstruct();
 	void SetMeshVerticesPosition();
 
@@ -64,6 +68,8 @@ private:
 	void OnKeyReleased(const int& key) override;
 
 	void OnKeyHold(const int& key) override;
+
+	void AddRemoveIndicesNode(Point* node);
 
 };
 

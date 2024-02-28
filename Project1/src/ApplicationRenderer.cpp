@@ -3,7 +3,7 @@
 
 ApplicationRenderer::ApplicationRenderer()
 {
-    sceneViewcamera = new Camera();
+    sceneViewcamera =  new GameCamera();
     sceneViewcamera->name = "Sceneview Camera";
 
     gameScenecamera = new Camera();
@@ -229,19 +229,19 @@ void ApplicationRenderer::Start()
 
 
 
-    Model* woodFloor = new Model("Models/WoodFloor/WoodFloor.obj");
-    woodFloor->transform.SetPosition(glm::vec3(0, -1.0f, 0));
-
-    GraphicsRender::GetInstance().AddModelAndShader(woodFloor, defaultShader);
-
-    Model* woodFloor2 = new Model(*woodFloor);
-    woodFloor2->transform.SetPosition(glm::vec3(4, -1.0f, 0));
-    GraphicsRender::GetInstance().AddModelAndShader(woodFloor2, defaultShader);
-
-
-    Model* woodFloor3 = new Model(*woodFloor);
-    woodFloor3->transform.SetPosition(glm::vec3(-4, -1.0f, 0));
-    GraphicsRender::GetInstance().AddModelAndShader(woodFloor3, defaultShader);
+   // Model* woodFloor = new Model("Models/WoodFloor/WoodFloor.obj");
+   // woodFloor->transform.SetPosition(glm::vec3(0, -1.0f, 0));
+   //
+   // GraphicsRender::GetInstance().AddModelAndShader(woodFloor, defaultShader);
+   //
+   // Model* woodFloor2 = new Model(*woodFloor);
+   // woodFloor2->transform.SetPosition(glm::vec3(4, -1.0f, 0));
+   // GraphicsRender::GetInstance().AddModelAndShader(woodFloor2, defaultShader);
+   //
+   //
+   // Model* woodFloor3 = new Model(*woodFloor);
+   // woodFloor3->transform.SetPosition(glm::vec3(-4, -1.0f, 0));
+   // GraphicsRender::GetInstance().AddModelAndShader(woodFloor3, defaultShader);
 
     Model* flagPole = new Model("Models/Pole/FlagPole.obj");
     flagPole->transform.SetScale(glm::vec3(0.5f));
@@ -250,7 +250,7 @@ void ApplicationRenderer::Start()
 
     Model* terrain = new Model("Models/Terrain/Terrain.ply");
     terrain->transform.SetScale(glm::vec3(0.25f));
-    terrain->transform.SetPosition(glm::vec3(0,-1,1));
+    terrain->transform.SetPosition(glm::vec3(0,-1,10));
 
     GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
 

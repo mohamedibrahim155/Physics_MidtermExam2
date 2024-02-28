@@ -99,16 +99,16 @@ public:
         glm::mat4 GetProjectionMatrix();
 
         // Inherited via Entity
-        void Start() override;
+        virtual void Start() override;
 
-        void Update(float deltaTime) override;
+        virtual void Update(float deltaTime) override;
 
-        void OnDestroy() override;
+        virtual void OnDestroy() override;
 
         // Inherited via object
-        void DrawProperties() override;
-        void SceneDraw() override;
-        void Render() override;
+        virtual  void DrawProperties() override;
+        virtual void SceneDraw() override;
+        virtual void Render() override;
 private:
     glm::mat4 projectionMatrix;
     float aspectRatio;

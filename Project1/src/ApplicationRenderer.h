@@ -29,7 +29,7 @@
 
 #include "Physics/PhysicsEngine.h"
 #include "FlagObject/Flag.h"
-
+#include "GameCamera/GameCamera.h"
 class ApplicationRenderer
 {
 public:
@@ -60,7 +60,7 @@ public:
 	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
-	Camera* sceneViewcamera;
+	GameCamera* sceneViewcamera;
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
 	bool isPlayMode = false;

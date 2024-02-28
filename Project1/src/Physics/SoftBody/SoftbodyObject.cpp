@@ -71,6 +71,11 @@ void SoftbodyObject::CalculateCloth()
 
 		SetupSticks(mesh, meshIndex);  // need to check with  meshcount>1 
 
+
+		for (Point* point : listOfPoints)
+		{
+			std::cout << "Point: " << point->indices << std::endl;
+		}
 		meshIndex++;
 
 	}
@@ -172,25 +177,46 @@ void SoftbodyObject::SetupPoints(std::vector<Vertex>& vertices)
 		listOfPoints.push_back(temp);
 	}
 
+
 }
 
-void SoftbodyObject::SetupSticks(std::shared_ptr<Mesh> mesh, unsigned int currentMeshIndex)
+void SoftbodyObject::SetupSticks(std::shared_ptr<Mesh>& mesh, unsigned int& currentMeshIndex)
 {
 	for (size_t i = 0; i < mesh->indices.size(); i += 3)
 	{
 
 
-		Point* point1 = listOfPoints[mesh->indices[currentMeshIndex +i]];
+		Point* point1 = listOfPoints[mesh->indices[currentMeshIndex +i]];  
 		Point* point2 = listOfPoints[mesh->indices[currentMeshIndex+ i + 1]];
 		Point* point3 = listOfPoints[mesh->indices[currentMeshIndex+ i + 2]];
 
+		//point1->AddIndices(mesh->indices[currentMeshIndex + i]);
+		//point2->AddIndices(mesh->indices[currentMeshIndex + i+1]);
+		//point3->AddIndices(mesh->indices[currentMeshIndex + i+2]);
+
+		point1->AddIndices(currentMeshIndex + i);
+		point2->AddIndices(currentMeshIndex + i + 1);
+		point3->AddIndices(currentMeshIndex + i + 2);
+
 		Stick* edge1 = new Stick(point1, point2);
+
+		point1->AddStick(edge1);
+		point2->AddStick(edge1);
+
 		listOfSticks.push_back(edge1);
 
 		Stick* edge2 = new Stick(point2, point3);
+
+		point2->AddStick(edge2);
+		point3->AddStick(edge2);
+
 		listOfSticks.push_back(edge2);
 
 		Stick* edge3 = new Stick(point3, point1);
+
+		point3->AddStick(edge3);
+		point1->AddStick(edge3);
+
 		listOfSticks.push_back(edge3);
 
 	}
@@ -554,7 +580,7 @@ void SoftbodyObject::UpdateVertices()
 	}
 	
 
-	UpdateNormals();
+	//UpdateNormals();
 
 	for (std::shared_ptr<Mesh> mesh: meshes)
 	{

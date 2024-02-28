@@ -35,7 +35,7 @@ public:
 	void CalculateCloth();
 	void CalculateSpring();
 	void SetupPoints(std::vector<Vertex>& vertices);
-	void SetupSticks(std::shared_ptr<Mesh> mesh, unsigned int currentMeshIndex);
+	void SetupSticks(std::shared_ptr<Mesh>& mesh, unsigned int& currentMeshIndex);
 
 
 	virtual void DrawProperties()override;

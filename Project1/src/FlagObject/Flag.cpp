@@ -40,7 +40,52 @@ FlagObject::FlagObject()
     transform.SetScale(glm::vec3(40, 40, 1));
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().alphaCutOutShader);
     showDebug = false;
+
+
+ 
+   
     Initialize();
+
+    /*meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(),meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());
+
+    meshes[0]->indices.erase(std::remove(meshes[0]->indices.begin(), meshes[0]->indices.end(),
+        meshes[0]->indices[0]), meshes[0]->indices.end());*/
+
 
     ///*softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.20f);
     //softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f,-4.6f), 0.20f);
@@ -56,7 +101,7 @@ FlagObject::FlagObject()
 
     AddLockedPoints();
 
-    InitalFlag();
+    InitalizeFlag();
 
     InputManager::GetInstance().AddObserver(this);
 
@@ -128,24 +173,85 @@ void FlagObject::GetRandomSpherePointed()
 
     float radius = 0.5f;
 
-    std::vector<Stick*> localList;
+    std::vector<Stick*> listOfRandomSticks;
     for (Stick* mStick : listOfSticks)
     {
         if (glm::distance(mStick->centre, sphereCenter) < radius) 
         {
-            localList.push_back(mStick);
-
+            listOfRandomSticks.push_back(mStick);
         }
     }
 
-    for (Stick* mStick : localList)
+    for (Stick*& disconnect : listOfRandomSticks)
     {
-        mStick->isActive = false;
+        disconnect->isActive = false;
+
+        for (Stick* connectedStick : disconnect->pointA->connectedSticks)
+        {
+            if (connectedStick == disconnect)
+            {
+                continue;
+            }
+            else
+            {
+                connectedStick->isActive = false;
+                AddRemoveIndicesNode(disconnect->pointA);
+            }
+        }
+
+
+        for (Stick* connectedStick : disconnect->pointB->connectedSticks)
+        {
+            if (connectedStick == disconnect)
+            {
+                continue;
+            }
+            else
+            {
+
+                connectedStick->isActive = false;
+                AddRemoveIndicesNode(disconnect->pointB);
+
+
+            }
+        }
+
 
     }
  
 
-   
+    std::vector<unsigned int> ::iterator it;
+    unsigned int currentRemoveIndex = 0;
+    std::vector<unsigned int> alreadyRemovedIndex;
+
+    for (Point* point : listOfRemovePointsIndices)
+    {
+        //unsigned int removeIndex = point->indices;
+
+        //for (unsigned int index : alreadyRemovedIndex)
+        //{
+        //    if (index == removeIndex)
+        //    {
+        //        continue;
+        //    }
+        //}
+
+        //if (removeIndex < meshes[0]->indices.size()) 
+        //{
+        //    
+        //    meshes[0]->indices.erase(meshes[0]->indices.begin() + (removeIndex - currentRemoveIndex));
+
+        //    alreadyRemovedIndex.push_back(removeIndex);
+
+        //    currentRemoveIndex++;
+        //}
+
+
+
+       
+    
+    }
+    listOfRemovePointsIndices.clear();
 
 }
 
@@ -157,7 +263,7 @@ void FlagObject::LockNodes(bool isLocked)
     }
 }
 
-void FlagObject::InitalFlag()
+void FlagObject::InitalizeFlag()
 {
     glm::mat4 inverse = transform.GetModelInverseMatrix();
 
@@ -183,6 +289,9 @@ void FlagObject::InitalFlag()
 void FlagObject::ReConstruct()
 {
    
+    isWindBlow = false;
+
+    acceleration = isWindBlow ? windOnAcceleration : windOffAcceleration;
 
     SetMeshVerticesPosition();
 
@@ -244,4 +353,17 @@ void FlagObject::OnKeyReleased(const int& key)
 
 void FlagObject::OnKeyHold(const int& key)
 {
+}
+
+void FlagObject::AddRemoveIndicesNode(Point* node)
+{
+    std::vector<Point*>::iterator it = std::find(listOfRemovePointsIndices.begin(),
+        listOfRemovePointsIndices.end(), node);
+
+    if (it == listOfRemovePointsIndices.end())
+    {
+        listOfRemovePointsIndices.push_back(node);
+    }
+      
+  
 }
