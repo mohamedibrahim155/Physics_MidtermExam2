@@ -24,7 +24,7 @@ FlagObject::FlagObject()
    // LoadModel("Models/Plane/IBU10x10.ply");
     LoadModel("Models/Plane/IBU_HighPoly10x10.ply");
   //  LoadModel("Models/Plane/Flag.ply");
-    acceleration = glm::vec3(-2, -1.0f, 0.7f);
+    acceleration = glm::vec3(0, -10, 0.2f);
     meshes[0]->meshMaterial->material()->diffuseTexture = flagTexture;
     meshes[0]->meshMaterial->material()->alphaTexture = flagopacityTexture;
     meshes[0]->meshMaterial->material()->useMaskTexture = true;
@@ -94,10 +94,10 @@ FlagObject::FlagObject()
 
 
 
-    AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.25f);
+    AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.25f);
+    AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.25f);
+    AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.25f);
 
     AddLockedPoints();
 
@@ -134,6 +134,7 @@ void FlagObject::SceneDraw()
 
 void FlagObject::Start()
 {
+   // acceleration = windOffAcceleration;
 }
 
 void FlagObject::Update(float deltaTime)
@@ -297,10 +298,10 @@ void FlagObject::ReConstruct()
 
     CalculateCloth();
 
-    AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
-    AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.30f);
+    AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.25f);
+    AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.25f);
+    AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.25f);
+    AddLockSphere(glm::vec3(0.100f, 4.5f, -4.6f), 0.25f);
 
     AddLockedPoints();
 

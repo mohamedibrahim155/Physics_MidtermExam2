@@ -72,10 +72,6 @@ void SoftbodyObject::CalculateCloth()
 		SetupSticks(mesh, meshIndex);  // need to check with  meshcount>1 
 
 
-		for (Point* point : listOfPoints)
-		{
-			std::cout << "Point: " << point->indices << std::endl;
-		}
 		meshIndex++;
 
 	}

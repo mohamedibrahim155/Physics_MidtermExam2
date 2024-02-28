@@ -246,11 +246,18 @@ void ApplicationRenderer::Start()
     Model* flagPole = new Model("Models/Pole/FlagPole.obj");
     flagPole->transform.SetScale(glm::vec3(0.5f));
     flagPole->transform.SetPosition(glm::vec3(0, -1.40f,0));
+    for (size_t i = 0; i < flagPole->meshes.size(); i++)
+    {
+        flagPole->meshes[i]->meshMaterial->material()->SetBaseColor(glm::vec4(0.75f, 0.75f, 0, 1));
+
+    }
+
     GraphicsRender::GetInstance().AddModelAndShader(flagPole, defaultShader);
 
     Model* terrain = new Model("Models/Terrain/Terrain.ply");
     terrain->transform.SetScale(glm::vec3(0.25f));
     terrain->transform.SetPosition(glm::vec3(0,-1,10));
+    terrain->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.75f, 0, 1));
 
     GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
 

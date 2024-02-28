@@ -23,7 +23,7 @@ public:
 	bool isSoftBodyActive = true;
 
 	float gravity = 0.1f /*-9.81f*/;
-	glm::vec3 acceleration = glm::vec3(-2, -1.0f, 0.7f);
+	glm::vec3 acceleration = glm::vec3(0, -10.0f, 0);
 	BodyType type = BodyType::CLOTH;
 
 	std::vector<Triangle> listOfTriangles;
