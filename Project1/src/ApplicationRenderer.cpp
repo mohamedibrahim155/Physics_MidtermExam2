@@ -125,10 +125,10 @@ void ApplicationRenderer::WindowInitialize(int width, int height, std::string wi
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    sceneViewcamera->transform.position = glm::vec3(0, 0, -10.0f);
+    sceneViewcamera->transform.position = glm::vec3(-0.27f, 3.64f, -16.64f);
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    gameScenecamera->transform.position = glm::vec3(0, 0, -10.0f);
+    gameScenecamera->transform.position = glm::vec3(-0.27f, 3.64f, -16.64f);
 
     renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -10.0f);
@@ -175,12 +175,12 @@ void ApplicationRenderer::InitializeSkybox()
 
     std::vector<std::string> faces
     {
-       ("Textures/skybox/right.jpg"),
-       ("Textures/skybox/left.jpg"),
-       ("Textures/skybox/top.jpg"),
-       ("Textures/skybox/bottom.jpg"),
-       ("Textures/skybox/front.jpg"),
-       ("Textures/skybox/back.jpg")
+       ("Textures/skybox/right.png"),
+       ("Textures/skybox/left.png"),
+       ("Textures/skybox/top.png"),
+       ("Textures/skybox/bottom.png"),
+       ("Textures/skybox/front.png"),
+       ("Textures/skybox/back.png")
     };
 
     skyBoxMaterial->skyBoxTexture->LoadTexture(faces);
@@ -211,6 +211,18 @@ void ApplicationRenderer::Start()
     directionLight->transform.SetRotation(glm::vec3(0, -130, 0));
     directionLight->transform.SetScale(glm::vec3(0.2));
 
+    Light* pointlight = new Light();
+    pointlight->Initialize(LightType::POINT_LIGHT, 1);
+    pointlight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+
+    pointlight->SetColor(glm::vec4(1, 1, 1, 1.0f));
+    pointlight->SetAttenuation(1, 1, 0.01f);
+    pointlight->SetInnerAndOuterCutoffAngle(11, 12);
+
+    pointlight->transform.SetPosition(glm::vec3(0, 5, 20));
+    pointlight->transform.SetRotation(glm::vec3(0, -130, 0));
+    pointlight->transform.SetScale(glm::vec3(0.2));
+
 
 
 
@@ -239,29 +251,42 @@ void ApplicationRenderer::Start()
 
     GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
 
+
+    std::string flagTexturePath = "Textures/FLAG2.png";
+    Texture* flagTexture = new Texture(flagTexturePath);
+
+
     SoftbodyObject* softBodyTest1 = new SoftbodyObject();
     softBodyTest1->name = "Flag";
 
 
     softBodyTest1->LoadModel("Models/Plane/Plane10x10.ply");
-
-
-    std::string flagTexturePath = "Textures/Flag.png";
-    Texture* flagTexture = new Texture(flagTexturePath);
-
+    //softBodyTest1->LoadModel("Models/Plane/Flag.ply");
+    softBodyTest1->acceleration = glm::vec3(-2, -1.0f, 0.7f);
+    softBodyTest1->meshes[0]->meshMaterial->material()->diffuseTexture = flagTexture;
+    softBodyTest1->meshes[0]->meshMaterial->material()->useMaskTexture = true;
+ 
     //softBodyTest1->LoadModel("Models/DefaultCube/DefaultCube.fbx");
     softBodyTest1->transform.SetPosition(glm::vec3(-1.30f, 5.00f, -4.60f));
+   // softBodyTest1->transform.SetPosition(glm::vec3(-0.10f, 4.50f, -4.60f));  50x50
     //softBodyTest1->transform.SetPosition(glm::vec3(0, 1, 0));
     //softBodyTest1->transform.SetScale(glm::vec3(5));
     softBodyTest1->transform.SetScale(glm::vec3(10,4,10));
-    GraphicsRender::GetInstance().AddModelAndShader(softBodyTest1, defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(softBodyTest1, alphaCutoutShader);
+    softBodyTest1->showDebug = false;
     softBodyTest1->Initialize();
     
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.20f);
+    /*softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.20f);
     softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f,-4.6f), 0.20f);
     softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.20f);
-    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.20f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.20f);*/
 
+
+
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.500, -4.6f), 0.30f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.30f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.9f, -4.6f), 0.30f);
+    softBodyTest1->AddLockSphere(glm::vec3(0.100f, 4.6f, -4.6f), 0.30f);
 
 }
 

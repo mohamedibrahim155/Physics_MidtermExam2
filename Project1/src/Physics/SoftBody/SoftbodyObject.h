@@ -18,6 +18,8 @@ public:
 	SoftbodyObject();
 	~SoftbodyObject();
 
+	bool showDebug = true;
+
 	bool isSoftBodyActive = true;
 
 	float gravity = 0.1f /*-9.81f*/;
@@ -63,7 +65,6 @@ public:
 	PhysicsObject* updateAABBTest = nullptr;
 private:
 
-	bool showDebug = true;
 
 	float renderRadius = 0.025f;
 	float tightnessFactor = 1;
