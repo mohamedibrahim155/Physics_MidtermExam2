@@ -6,7 +6,7 @@ ApplicationRenderer::ApplicationRenderer()
     sceneViewcamera =  new GameCamera();
     sceneViewcamera->name = "Sceneview Camera";
 
-    gameScenecamera = new Camera();
+    gameScenecamera = new GameCamera();
     gameScenecamera->name = "GameScene Camera";
 
     renderTextureCamera = new Camera();
@@ -129,7 +129,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height, std::string wi
     sceneViewcamera->transform.position = glm::vec3(-0.27f, 3.64f, -5.74f);
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    gameScenecamera->transform.position = glm::vec3(-0.27f, 3.64f, -16.64f);
+    gameScenecamera->transform.position = glm::vec3(-0.27f, 3.64f, -5.74f);
 
     renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -10.0f);
