@@ -182,7 +182,7 @@ void FlagObject::GetRandomSpherePointed()
     {
         if (glm::distance(mStick->centre, sphereCenter) < radius) 
         {
-            mStick->isActive = false;
+            //mStick->isActive = false;
 
             listOfRandomSticks.push_back(mStick);
         }
