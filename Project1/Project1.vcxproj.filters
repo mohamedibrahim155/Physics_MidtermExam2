@@ -461,6 +461,9 @@
     <ClInclude Include="src\GameCamera\GameCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shaders\FlagShader.vert">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -487,5 +490,6 @@
     <None Include="Shaders\PostProcessing\Pixelization.frag" />
     <None Include="Shaders\PostProcessing\FinalOutputShader.vert" />
     <None Include="Shaders\PostProcessing\FinalOutputShader.frag" />
+    <None Include="Shaders\FlagShader.frag" />
   </ItemGroup>
 </Project>

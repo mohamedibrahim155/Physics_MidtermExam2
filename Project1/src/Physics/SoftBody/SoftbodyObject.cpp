@@ -576,7 +576,7 @@ void SoftbodyObject::UpdateVertices()
 	}
 	
 
-	//UpdateNormals();
+	UpdateNormals();
 
 	for (std::shared_ptr<Mesh> mesh: meshes)
 	{

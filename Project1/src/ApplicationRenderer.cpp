@@ -155,6 +155,9 @@ void ApplicationRenderer::InitializeShaders()
     alphaCutoutShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag", ALPHA_CUTOUT);
     alphaCutoutShader->blendMode = ALPHA_CUTOUT;
 
+    flagShader = new Shader("Shaders/FlagShader.vert", "Shaders/FlagShader.frag", ALPHA_CUTOUT);
+   
+    
     skyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
     skyboxShader->modelUniform = false;
 
@@ -163,6 +166,7 @@ void ApplicationRenderer::InitializeShaders()
     GraphicsRender::GetInstance().stencilShader = stencilShader;
     GraphicsRender::GetInstance().alphaCutOutShader = alphaCutoutShader;
     GraphicsRender::GetInstance().alphaBlendShader = alphaBlendShader;
+    GraphicsRender::GetInstance().flagShader = flagShader;
 
 
 
@@ -506,6 +510,14 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
     alphaCutoutShader->setBool("isDepthBuffer", false);
+
+    flagShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(flagShader);
+    flagShader->setMat4("projection", projection);
+    flagShader->setMat4("view", view);
+    flagShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    flagShader->setFloat("time", scrollTime);
+    flagShader->setBool("isDepthBuffer", false);
 
     solidColorShader->Bind();
     solidColorShader->setMat4("projection", projection);

@@ -38,7 +38,7 @@ FlagObject::FlagObject()
 
    transform.SetRotation(glm::vec3(0, 180.00, 0));
     transform.SetScale(glm::vec3(40, 40, 1));
-    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().alphaCutOutShader);
+    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().flagShader);
     showDebug = false;
 
 
@@ -139,7 +139,8 @@ void FlagObject::Start()
 
 void FlagObject::Update(float deltaTime)
 {
-   
+    
+    SetShaderValues();
 }
 
 void FlagObject::Render()
@@ -164,6 +165,8 @@ void FlagObject::AddLockedPoints()
 
 void FlagObject::GetRandomSpherePointed()
 {
+    glm::mat4 modelTransformedMatrix = transform.GetModelMatrix();
+
     int randomIndex = Math::GetRandomIntNumber(0, listOfSticks.size() - 1);
 
     Stick* stick = listOfSticks[randomIndex];
@@ -179,11 +182,19 @@ void FlagObject::GetRandomSpherePointed()
     {
         if (glm::distance(mStick->centre, sphereCenter) < radius) 
         {
+            mStick->isActive = false;
+
             listOfRandomSticks.push_back(mStick);
         }
     }
 
-    for (Stick*& disconnect : listOfRandomSticks)
+
+
+#pragma region TEST_ERROR
+
+
+
+    /*for (Stick*& disconnect : listOfRandomSticks)
     {
         disconnect->isActive = false;
 
@@ -218,41 +229,55 @@ void FlagObject::GetRandomSpherePointed()
         }
 
 
-    }
+    }*/
  
 
-    std::vector<unsigned int> ::iterator it;
-    unsigned int currentRemoveIndex = 0;
-    std::vector<unsigned int> alreadyRemovedIndex;
+    //std::vector<unsigned int> ::iterator it;
+    //unsigned int currentRemoveIndex = 0;
+    //std::vector<unsigned int> alreadyRemovedIndex;
 
-    for (Point* point : listOfRemovePointsIndices)
+    //for (Point* point : listOfRemovePointsIndices)
+    //{
+    //    //unsigned int removeIndex = point->indices;
+
+    //    //for (unsigned int index : alreadyRemovedIndex)
+    //    //{
+    //    //    if (index == removeIndex)
+    //    //    {
+    //    //        continue;
+    //    //    }
+    //    //}
+
+    //    //if (removeIndex < meshes[0]->indices.size()) 
+    //    //{
+    //    //    
+    //    //    meshes[0]->indices.erase(meshes[0]->indices.begin() + (removeIndex - currentRemoveIndex));
+
+    //    //    alreadyRemovedIndex.push_back(removeIndex);
+
+    //    //    currentRemoveIndex++;
+    //    //}
+
+
+
+    //   
+    //
+    //}
+    //listOfRemovePointsIndices.clear();
+#pragma endregion
+
+    for (Stick* mStick : listOfRandomSticks)
     {
-        //unsigned int removeIndex = point->indices;
-
-        //for (unsigned int index : alreadyRemovedIndex)
-        //{
-        //    if (index == removeIndex)
-        //    {
-        //        continue;
-        //    }
-        //}
-
-        //if (removeIndex < meshes[0]->indices.size()) 
-        //{
-        //    
-        //    meshes[0]->indices.erase(meshes[0]->indices.begin() + (removeIndex - currentRemoveIndex));
-
-        //    alreadyRemovedIndex.push_back(removeIndex);
-
-        //    currentRemoveIndex++;
-        //}
-
-
-
        
-    
+        listOfBulletPositions.push_back(mStick->pointA->position);
+
+        return;
     }
-    listOfRemovePointsIndices.clear();
+
+   // GraphicsRender::GetInstance()
+  
+    isBullet = true;
+    //SetShaderValues(glm::vec3());
 
 }
 
@@ -281,6 +306,11 @@ void FlagObject::InitalizeFlag()
             listOfFlagPositions.push_back(temp);
         }
 
+        for (unsigned int& index : mesh->indices)
+        {
+            meshIndices.push_back(index);
+        }
+
     }
 
 
@@ -294,9 +324,12 @@ void FlagObject::ReConstruct()
 
     acceleration = isWindBlow ? windOnAcceleration : windOffAcceleration;
 
-    SetMeshVerticesPosition();
+    listOfBulletPositions.clear();
 
+    SetMeshVerticesPosition();
+    
     CalculateCloth();
+
 
     AddLockSphere(glm::vec3(0.100f, 5.7f, -4.6f), 0.25f);
     AddLockSphere(glm::vec3(0.100f, 5.12f, -4.6f), 0.25f);
@@ -317,6 +350,13 @@ void FlagObject::SetMeshVerticesPosition()
         glm::vec3 position = modelTransform * glm::vec4(flagvertex->initialPosition, 1);
 
         flagvertex->vertex->Position = flagvertex->initialPosition;
+    }
+
+    //listOfFlagPositions.clear();
+
+    for (std::shared_ptr<Mesh> mesh : meshes)
+    {
+        mesh->indices = meshIndices;
     }
 }
 
@@ -367,4 +407,19 @@ void FlagObject::AddRemoveIndicesNode(Point* node)
     }
       
   
+}
+
+void FlagObject::SetShaderValues()
+{
+
+    for (size_t i = 0; i < listOfBulletPositions.size(); i++)
+    {
+        GraphicsRender::GetInstance().flagShader->Bind();
+
+        std::string uniform = "sphere[" + std::to_string(i) + "].sphereCentre";
+
+        GraphicsRender::GetInstance().flagShader->setVec3(uniform, listOfBulletPositions[i]);
+        GraphicsRender::GetInstance().flagShader->setFloat("radius", 0.1f);
+    }
+   
 }

@@ -81,6 +81,7 @@ private:
 	Shader* solidColorShader;
 	Shader* alphaBlendShader;
 	Shader* alphaCutoutShader;
+	Shader* flagShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

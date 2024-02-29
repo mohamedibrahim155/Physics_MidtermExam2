@@ -34,7 +34,7 @@ public:
 private: 
 	
 	bool isWindBlow = false;
-
+	bool isBullet = false;
 	float minX = -1.0f;
 	float maxX = -5.0f;
 
@@ -50,8 +50,8 @@ private:
 	std::vector<FlagVertex*> listOfFlagPositions;
 
 	std::vector<Point*> listOfRemovePointsIndices;
-	//std::vector<unsigned int> alreadyRemovedIndex;
-
+	std::vector<glm::vec3> listOfBulletPositions;
+	std::vector<unsigned int> meshIndices;
 
 	void AddLockedPoints();
 
@@ -70,6 +70,9 @@ private:
 	void OnKeyHold(const int& key) override;
 
 	void AddRemoveIndicesNode(Point* node);
+
+	void SetShaderValues();
+
 
 };
 

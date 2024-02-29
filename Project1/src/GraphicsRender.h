@@ -66,6 +66,7 @@ public:
 	Shader* solidColorShader;
 	Shader* alphaBlendShader;
 	Shader* alphaCutOutShader;
+	Shader* flagShader;
 	Shader* stencilShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();

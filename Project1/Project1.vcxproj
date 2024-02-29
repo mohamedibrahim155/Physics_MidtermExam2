@@ -217,6 +217,7 @@
     <ClInclude Include="Extern\imGui\ImGuizmo.h" />
     <ClInclude Include="Extern\imGui\ImSequencer.h" />
     <ClInclude Include="Extern\imGui\ImZoomSlider.h" />
+    <ClInclude Include="Shaders\FlagShader.vert" />
     <ClInclude Include="src\GameCamera\GameCamera.h" />
     <ClInclude Include="src\FlagObject\Flag.h" />
     <ClInclude Include="src\Physics\SoftBody\Point.h" />
@@ -302,6 +303,7 @@
     <None Include="Shaders\Light_FragmentShader2.frag" />
     <None Include="Shaders\PostProcessing\FinalOutputShader.frag" />
     <None Include="Shaders\PostProcessing\FinalOutputShader.vert" />
+    <None Include="Shaders\FlagShader.frag" />
     <None Include="Shaders\PostProcessing\Pixelization.frag" />
     <None Include="Shaders\PostProcessing\Pixelization.vert" />
     <None Include="Shaders\ScrollTexture.frag" />
