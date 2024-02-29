@@ -386,6 +386,11 @@ void FlagObject::OnKeyPressed(const int& key)
     {
         ReConstruct();
     }
+
+    if (key == GLFW_KEY_RIGHT)
+    {
+        acceleration.x -= 0.5f;
+    }
 }
 
 void FlagObject::OnKeyReleased(const int& key)
